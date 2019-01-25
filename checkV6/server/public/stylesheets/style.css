@@ -1,0 +1,31 @@
+.demok3_input {
+  transition: all 0.30s ease-in-out;
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  border: #35a5e5 1px solid;
+  border-radius: 5px;
+  outline: none;
+}
+
+.demok3_input:focus {
+  box-shadow: 0 0 5px rgb(53, 211, 94);
+  -webkit-box-shadow: 0 0 5px rgb(53, 211, 94);
+  -moz-box-shadow: 0 0 5px rgb(53, 211, 94);
+}
+
+.demok3_a {
+  text-decoration: none;
+  -webkit-transition: all linear 0.30s;
+  -moz-transition: all linear 0.30s;
+  transition: all linear 0.30s;
+  background: rgb(53, 211, 94);
+  color: white;
+  padding: 6px 25px 6px 25px;
+  font: 12px '微软雅黑';
+  border-radius: 10px;
+}
+
+.demok3_a:hover {
+  background: rgba(39, 154, 187, 1);
+  cursor: pointer;
+}
