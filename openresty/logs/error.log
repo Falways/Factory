@@ -1,0 +1,13 @@
+2019/01/25 11:07:32 [notice] 9140#9008: signal process started
+2019/01/25 11:12:35 [notice] 8516#9196: signal process started
+2019/01/25 11:14:17 [error] 6540#2988: *1 CreateFile() "./html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "127.0.0.1", referrer: "http://127.0.0.1/"
+2019/01/25 11:47:09 [notice] 9092#10072: signal process started
+2019/01/25 11:49:37 [notice] 10964#10960: signal process started
+2019/01/25 11:49:42 [error] 10952#11012: *7 CreateFile() "./html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "127.0.0.1"
+2019/01/25 11:50:15 [notice] 10812#3060: signal process started
+2019/01/25 11:51:01 [notice] 10932#10860: signal process started
+2019/01/25 11:52:34 [notice] 11228#8968: signal process started
+2019/01/25 11:53:08 [notice] 10696#8676: signal process started
+2019/01/25 11:53:45 [error] 10708#7912: *2 CreateFile() "./html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "127.0.0.1", referrer: "http://127.0.0.1/"
+2019/01/25 11:55:22 [notice] 10732#10820: signal process started
+2019/01/25 11:55:22 [error] 10732#10820: CreateFile() "./logs/nginx.pid" failed (2: The system cannot find the file specified)
