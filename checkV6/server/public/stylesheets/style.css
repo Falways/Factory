@@ -1,10 +1,26 @@
+.login-footer{
+  height:47px;
+  text-align: center;
+  position: fixed;
+  width:100%;
+  bottom: 50px;
+  padding:10px;
+}
 .demok3_input {
   transition: all 0.30s ease-in-out;
   -webkit-transition: all 0.30s ease-in-out;
   -moz-transition: all 0.30s ease-in-out;
-  border: #35a5e5 1px solid;
+  border: #64cde9 1px solid;
   border-radius: 5px;
   outline: none;
+}
+input::-webkit-input-placeholder {
+  /* placeholder颜色  */
+  color: #aab2bd;
+  /* placeholder字体大小  */
+  font-size: 12px;
+  /* placeholder位置  */
+  padding-left: 8px;
 }
 
 .demok3_input:focus {
@@ -22,7 +38,7 @@
   color: white;
   padding: 6px 25px 6px 25px;
   font: 12px '微软雅黑';
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .demok3_a:hover {

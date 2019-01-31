@@ -1,0 +1,18 @@
+[Unit]
+Description = checkV6
+After  = network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=5
+
+WorkingDirectory=/home/checkV6/
+ExecStart = /usr/local/node/bin/node /home/checkV6/server/bin/www
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=checkV6Server
+Environment='NODE_ENV=production'
+PrivateTmp = true
+[Install]
+WantedBy=multi-user.target

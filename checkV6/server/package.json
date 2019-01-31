@@ -6,11 +6,16 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "async": "^2.6.1",
+    "child_process": "^1.0.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "device": "^0.3.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
+    "iconv-lite": "^0.4.24",
     "jade": "~1.11.0",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "request": "^2.88.0"
   }
 }
