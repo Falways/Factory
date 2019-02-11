@@ -14,10 +14,39 @@ block content
     input.demok3_input(style={height: '30px',width:'500px'},id ='domain',placeholder='如：www.cyberex.com.cn')
     a.demok3_a(style={height: '32px','margin-left':'2px'},id='submit') 分析
   div(style={'margin-top':'20px','text-align':'center'},id='content')
+  table(id='table',style={'text-align':'center',width:'70%','margin-left':'18%'})
+      thead
+        tr
+            th(data-field='id') ID
+            th(data-field='name') Item Name
+            th(data-field='price') Item Price
+
   div.login-footer
       h4 广州赛讯信息技术有限公司
       h4 Copyright(c) 2018-2020 GuangZhou CyberEX Co.Ltd, All rights reserved
   script.
+     var $table = $('#table')
+     $(function () {
+         var data = [
+             {
+                 'id': 0,
+                 'name': 'Item 0',
+                 'price': '$0'
+             },
+             {
+                 'id': 1,
+                 'name': 'Item 1',
+                 'price': '$1'
+             },
+             {
+                 'id': 2,
+                 'name': 'Item 2',
+                 'price': '$2'
+             }
+         ]
+         $table.bootstrapTable({data: data})
+
+     })
      $('#submit').on('click',function () {
          if (!$('#domain').val()) {
              $('#content').html('<p style="color: red">请输入域名！</p>');
