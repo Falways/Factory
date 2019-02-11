@@ -7,7 +7,7 @@ var deviceUtil = require('device');
 let Iconv = require('iconv-lite');
 /* GET home page. */
 router.get('/' ,function(req, res, next) {
-    let ip = getClientIp(req);
+    let ip = '113.65.16.248';
     ip = ip.match(/(((2[0-4][0-9])|(25[0-5])|(1[0-9]{0,2})|([1-9][0-9])|([1-9]))\.){3}((2[0-4][0-9])|(25[0-5])|(1[0-9]{0,2})|([1-9][0-9])|([1-9]))/g)[0];
     let agent = req.headers['user-agent'];
     let device =deviceUtil(agent);
@@ -27,7 +27,6 @@ router.get('/' ,function(req, res, next) {
             res.render('index', { title: 'Express',connect:connect});
         }
     ])
-
 });
 
 router.post('/checkV6',(req,res,next)=>{
