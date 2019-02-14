@@ -12,10 +12,13 @@
     "debug": "~2.6.9",
     "device": "^0.3.9",
     "express": "~4.16.0",
+    "fs": "^0.0.1-security",
     "http-errors": "~1.6.2",
     "iconv-lite": "^0.4.24",
     "jade": "~1.11.0",
     "morgan": "~1.9.0",
-    "request": "^2.88.0"
+    "path": "^0.12.7",
+    "request": "^2.88.0",
+    "sqlite3": "^4.0.6"
   }
 }
