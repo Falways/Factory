@@ -138,8 +138,10 @@ router.post('/checkV6',async (req,res,next)=>{
                     if (result=='success') {
                         final['v4http'] = result;
                         score+=20;
+                        final['score']=score;
                     } else {
                         final['v4http']=result;
+                        final['score']=score;
                     }
                     done()
                 })
@@ -150,8 +152,10 @@ router.post('/checkV6',async (req,res,next)=>{
                     if (result=='success') {
                         final['v4https']=result;
                         score+=20;
+                        final['score']=score;
                     } else {
                         final['v4https']=result;
+                        final['score']=score;
                     }
                     done()
                 })
@@ -161,13 +165,15 @@ router.post('/checkV6',async (req,res,next)=>{
                     //v6 http
                     score += 20;
                     final['supportV6']=true;
-                    let v6Ip =  arr[1]?`[${arr[0]}]:${arr[1]}`:`[${arr[0]}]`;
+                    let v6Ip = `[${v6addr}]`;
                     validReq('http://'+v6Ip,(result)=>{
                         if (result=='success') {
                             final['v6http']=result;
                             score+=20;
+                            final['score']=score;
                         } else {
                             final['v6http']=result;
+                            final['score']=score;
                         }
                         done()
                     })
@@ -178,7 +184,7 @@ router.post('/checkV6',async (req,res,next)=>{
             function (done) {
                 if (v6addr){
                     //v6 https
-                    let v6Ip =  arr[1]?`[${arr[0]}]:${arr[1]}`:`[${arr[0]}]`;
+                    let v6Ip =  `[${v6addr}]`;
                     validReq('https://'+v6Ip,(result)=>{
                         if (result=='success') {
                             final['v6https']=result;
@@ -268,9 +274,11 @@ const validReq = (url,done) => {
             headers
         },
         (err,res,body) => {
+           /* console.log('输出URL:'+url);
+            console.log('输出Body：'+body)*/
             if (err) {
                 done('err_url')
-            }else if(body.toString()){
+            }else if(body){
                 done('success')
             }else {
                 done('null_response')
