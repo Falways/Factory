@@ -51,7 +51,7 @@
 
     <Row>
       <Col span="24" style="text-align: center">
-        <h2>赛讯在线检测网站IPV6访问</h2>
+        <h2>赛讯在线检测网站IPv6访问</h2>
       </Col>
     </Row>
     <Button @click="drawer = true" style="position: absolute;right: 10px;top: 10px" type="info" >显示终端信息</Button>
@@ -118,7 +118,7 @@
       </div>
       </Drawer>
 
-      <div  style="margin-top: 30px;width: 70%;margin-left: 15%">
+      <div  style="margin-top: 30px;width: 80%;margin-left: 11%">
         <Row style="text-align: center">
           <Form ref="formInline" :model="formInline" :rules="ruleInline"  inline>
             <FormItem style="width: 40%" prop="domain">
@@ -203,6 +203,8 @@
             title: '时间',
             key: 'time',
             align: 'center',
+            width:'150',
+            sortable: true,
             render:(h,params)=>{
               return h('span',{},new Date(params.row.time).Format('yyyy/MM/dd hh:mm:ss'))
             }
@@ -210,7 +212,20 @@
           {
             title: '网站',
             key: 'url',
+            width:'150',
             align: 'center'
+          },
+          {
+            title: 'IPv4地址',
+            key: 'v4addr',
+            width:'150',
+            align: 'center',
+          },
+          {
+            title: 'IPv6地址',
+            key: 'v6addr',
+            align: 'center',
+            tooltip:true
           },
           {
             title: 'IPv4解析',
@@ -262,16 +277,6 @@
                 })
               }
             }
-          },
-          {
-            title: 'IPv4地址',
-            key: 'v4addr',
-            align: 'center',
-          },
-          {
-            title: 'IPv6地址',
-            key: 'v6addr',
-            align: 'center',
           },
           {
             title: 'IPv4 HTTP',
@@ -376,6 +381,7 @@
           {
             title:'评分',
             key:'score',
+            width:'80',
             align: 'center',
             render:(h,params) => {
               if (params.row.score<60){
@@ -457,22 +463,22 @@
               if (v4HttpSpeed) {
                 that.speed = true;
                 let startAmount = getNum(v4HttpSpeed.avg);
-                speedArr = speedArr.concat([Object.assign(v4HttpSpeed,{name:'IPV4 HTTP',n:startAmount})]);
+                speedArr = speedArr.concat([Object.assign(v4HttpSpeed,{name:'IPv4 HTTP',n:startAmount})]);
               }
               if (v4HttpsSpeed) {
                 that.speed = true;
                 let startAmount = getNum(v4HttpsSpeed.avg);
-                speedArr = speedArr.concat([Object.assign(v4HttpsSpeed,{name:'IPV4 HTTPS',n:startAmount})]);
+                speedArr = speedArr.concat([Object.assign(v4HttpsSpeed,{name:'IPv4 HTTPS',n:startAmount})]);
               }
               if (v6HttpSpeed) {
                 that.speed = true;
                 let startAmount = getNum(v6HttpSpeed.avg);
-                speedArr = speedArr.concat([Object.assign(v6HttpSpeed,{name:'IPV6 HTTP',n:startAmount})]);
+                speedArr = speedArr.concat([Object.assign(v6HttpSpeed,{name:'IPv6 HTTP',n:startAmount})]);
               }
               if (v6HttpsSpeed) {
                 that.speed = true;
                 let startAmount = getNum(v6HttpsSpeed.avg);
-                speedArr = speedArr.concat([Object.assign(v6HttpsSpeed,{name:'IPV6 HTTPS',n:startAmount})]);
+                speedArr = speedArr.concat([Object.assign(v6HttpsSpeed,{name:'IPv6 HTTPS',n:startAmount})]);
               }
               console.log(speedArr.toString())
               that.speedList=speedArr;
