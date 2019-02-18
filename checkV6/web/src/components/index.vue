@@ -118,7 +118,7 @@
       </div>
       </Drawer>
 
-      <div  style="margin-top: 30px;width: 80%;margin-left: 11%">
+      <div  style="margin-top: 30px;width: 90%;margin-left: 5%">
         <Row style="text-align: center">
           <Form ref="formInline" :model="formInline" :rules="ruleInline"  inline>
             <FormItem style="width: 40%" prop="domain">
@@ -212,8 +212,9 @@
           {
             title: '网站',
             key: 'url',
-            width:'150',
-            align: 'center'
+            width:'160',
+            align: 'center',
+            tooltip:true
           },
           {
             title: 'IPv4地址',
@@ -228,9 +229,11 @@
             tooltip:true
           },
           {
-            title: 'IPv4解析',
             key: 'supportV4',
             align: 'center',
+            renderHeader:(h,obj) => {
+              return h('div',[h('span',{},'IPv4'),h('br',{}),h('span',{},'解析')])
+            },
             render:(h,params)=>{
               const row = params.row;
               if (row.supportV4==true) {
@@ -254,9 +257,11 @@
             }
           },
           {
-            title:'IPv6解析',
             key: 'supportV6',
             align: 'center',
+            renderHeader:(h,obj) => {
+              return h('div',[h('span',{},'IPv6'),h('br',{}),h('span',{},'解析')])
+            },
             render:(h,params)=>{
               const row = params.row;
               if (row.supportV6==true) {
@@ -279,9 +284,11 @@
             }
           },
           {
-            title: 'IPv4 HTTP',
             key: 'v4http',
             align: 'center',
+            renderHeader:(h,obj) => {
+              return h('div',[h('span',{},'IPv4'),h('br',{}),h('span',{},'HTTP')])
+            },
             render:(h,params) => {
               const row = params.row;
               if (row.v4http=='success'){
@@ -304,9 +311,11 @@
             }
           },
           {
-            title: 'IPv4 HTTPS',
             key: 'v4https',
             align: 'center',
+            renderHeader:(h,obj) => {
+              return h('div',[h('span',{},'IPv4'),h('br',{}),h('span',{},'HTTPS')])
+            },
             render:(h,params) => {
               const row = params.row;
               if (row.v4https=='success'){
@@ -329,9 +338,11 @@
             }
           },
           {
-            title: 'IPv6 HTTP',
             key: 'v6http',
             align: 'center',
+            renderHeader:(h,obj) => {
+              return h('div',[h('span',{},'IPv6'),h('br',{}),h('span',{},'HTTP')])
+            },
             render:(h,params) => {
               const row = params.row;
               if (row.v6http=='success'){
@@ -354,9 +365,11 @@
             }
           },
           {
-            title: 'IPv6 HTTPS',
             key: 'v6https',
             align: 'center',
+            renderHeader:(h,obj) => {
+              return h('div',[h('span',{},'IPv6'),h('br',{}),h('span',{},'HTTPS')])
+            },
             render:(h,params) => {
               const row = params.row;
               if (row.v6https=='success'){
