@@ -81,14 +81,22 @@ router.post('/checkV6',async (req,res,next)=>{
             return;
         }
         let v4addr = null;
-        let reg = /ANSWER SECTION:\r\n[\w\s.\d:]+/gm;
+        let reg = /ANSWER SECTION:((\r\n)|(\n))[\w\s.\d:-]+/gm;
         let v4reg = /((2[0-4][0-9])|(25[0-5])|(1[0-9]{0,2})|([1-9][0-9])|([1-9]))\.(((2[0-4][0-9])|(25[0-5])|(1[0-9]{0,2})|([1-9][0-9])|([0-9]))\.){2}((2[0-4][0-9])|(25[0-5])|(1[0-9]{0,2})|([1-9][0-9])|([1-9]))/g;
         console.log(stdout);
         let s0 = stdout.match(reg);
         if (s0 && s0.length>0){
-            let s1 = s0[0].match(v4reg);
-            if (s1 && s1.length>0){
-                v4addr =  (stdout.match(reg)[0]).match(v4reg)[0];
+            let s1 = null;
+            for (let i = 0;i<s0.length;i++){
+                let temp = s0[i].match(v4reg);
+                if (temp && temp[0]) {
+                    s1=temp[0];
+                    break;
+                }
+            }
+            if (s1){
+                console.log('我的输出：'+s1)
+                v4addr = s1;
                 final['supportV4']=true;
                 final['v4addr']=v4addr;
                 score+=10;
@@ -113,14 +121,21 @@ router.post('/checkV6',async (req,res,next)=>{
             return;
         }
         let v6addr = null;
-        let reg = /ANSWER SECTION:\r\n[\w\s.\d:]+/gm;
+        let reg = /ANSWER SECTION:((\r\n)|(\n))[\w\s.\d:-]+/gm;
         let v6reg = /((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?/g;
         console.log(stdout);
         let s0 = stdout.match(reg);
         if (s0 && s0.length>0){
-            let s1 = s0[0].match(v6reg);
-            if (s1 && s1.length>0){
-                v6addr =  (stdout.match(reg)[0]).match(v6reg)[0];
+            let s1 = null;
+            for (let i = 0;i<s0.length;i++){
+                let temp = s0[i].match(v6reg);
+                if (temp && temp[0]) {
+                    s1=temp[0];
+                    break;
+                }
+            }
+            if (s1){
+                v6addr = s1;
                 final['v6addr']=v6addr;
                 score+=10;
             }else {
@@ -128,7 +143,7 @@ router.post('/checkV6',async (req,res,next)=>{
             }
         }else {
             final['supprtV4']=false;
-            final['v4addr']=null;
+            final['v6addr']=null;
         }
         final['supportV6']=false;
         async.waterfall([
