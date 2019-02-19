@@ -180,10 +180,9 @@ router.post('/checkV6',async (req,res,next)=>{
                     //v6 http
                     score += 20;
                     final['supportV6']=true;
-                    let v6Ip = `[${v6addr}]`;
-                    validReq('http://'+v6Ip,(result)=>{
-                        if (result=='success') {
-                            final['v6http']=result;
+                    curlSpeed('http://'+domain,(result)=>{
+                        if (result!='err_url') {
+                            final['v6http']='success';
                             score+=20;
                             final['score']=score;
                         } else {
@@ -199,10 +198,9 @@ router.post('/checkV6',async (req,res,next)=>{
             function (done) {
                 if (v6addr){
                     //v6 https
-                    let v6Ip =  `[${v6addr}]`;
-                    validReq('https://'+v6Ip,(result)=>{
-                        if (result=='success') {
-                            final['v6https']=result;
+                    curlSpeed('https://'+domain,(result)=>{
+                        if (result!='err_url') {
+                            final['v6https']='success';
                             score+=20;
                             final['score']=score;
                         } else {
@@ -245,9 +243,8 @@ router.post('/checkV6',async (req,res,next)=>{
                 }
             },
             function(done){
-                let v6Ip =  arr[1]?`[${arr[0]}]:${arr[1]}`:`[${arr[0]}]`;
                 if (final.v6http=='success'){
-                    testSpeed('http://'+v6Ip,function (result) {
+                    testCurlSpeed('http://'+domain,function (result) {
                         final['v6HttpSpeed']=result;
                         done()
                     })
@@ -256,9 +253,8 @@ router.post('/checkV6',async (req,res,next)=>{
                 }
             },
             function(done){
-                let v6Ip =  arr[1]?`[${arr[0]}]:${arr[1]}`:`[${arr[0]}]`;
                 if (final.v6https=='success'){
-                    testSpeed('https://'+v6Ip,function (result) {
+                    testCurlSpeed('https://'+domain,function (result) {
                         final['v6HttpsSpeed']=result;
                         done()
                     })
@@ -342,6 +338,50 @@ const getAddr = function(ip,callback){
            }
 
         })
+}
+const curlSpeed = (url,done) => {
+    let start = new Date()
+    exec(`curl -6 ${url}`,{timeout:1000},(error,stdout,stderr) => {
+        if (error && error!=null){
+            done('err_url')
+            return;
+        }
+        let end = new Date();
+        done(end-start)
+    })
+}
+const testCurlSpeed = function(url,callback) {
+    let arr = [];
+    async.waterfall([
+        function (done) {
+            for (let i = 0; i<10;i++){
+                curlSpeed(url,function (time) {
+                    if (time == 'err_url') {
+                        callback('err_url');
+                        return;
+                    }
+                    arr.push(time);
+                    if (arr.length==10){
+                        done()
+                    }
+                })
+            }
+        },
+        function (done) {
+            console.log(arr.sort());
+            let max = 0;
+            let min = 10000000;
+            let sum = 0;
+            arr.forEach(function (item) {
+                if (item>max) max=item;
+                if (item<min) min=item;
+                sum+=item;
+            })
+            let avg = sum/10;
+            console.log('max:'+max,'min:'+min,'avg:'+avg)
+            callback({max:max,min:min,avg:avg})
+        }
+    ])
 }
 const speed = (url,done) => {
     let start = new Date();
