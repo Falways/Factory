@@ -341,7 +341,7 @@ const getAddr = function(ip,callback){
 }
 const curlSpeed = (url,done) => {
     let start = new Date()
-    exec(`curl -6 ${url}`,{timeout:1000},(error,stdout,stderr) => {
+    exec(`curl -6 ${url}`,{timeout:1000,maxBuffer:20000 * 1024},(error,stdout,stderr) => {
         if (error && error!=null){
             done('err_url')
             return;
