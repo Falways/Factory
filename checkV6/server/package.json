@@ -9,6 +9,7 @@
     "async": "^2.6.1",
     "child_process": "^1.0.2",
     "cookie-parser": "~1.4.3",
+    "crypto-js": "^3.1.9-1",
     "debug": "~2.6.9",
     "device": "^0.3.9",
     "express": "~4.16.0",
