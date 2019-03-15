@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var badNessRouter = require('./routes/badness_url');
 var app = express();
 let generate = require('./db/generate').init();
 // view engine setup
@@ -21,6 +21,7 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/badness_url',badNessRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

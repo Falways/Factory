@@ -13,13 +13,17 @@
     "debug": "~2.6.9",
     "device": "^0.3.9",
     "express": "~4.16.0",
+    "formidable": "^1.2.1",
     "fs": "^0.0.1-security",
     "http-errors": "~1.6.2",
     "iconv-lite": "^0.4.24",
     "jade": "~1.11.0",
+    "log4js": "^4.0.2",
     "morgan": "~1.9.0",
+    "node-xlsx": "^0.14.1",
     "path": "^0.12.7",
     "request": "^2.88.0",
-    "sqlite3": "^4.0.6"
+    "sqlite3": "^4.0.6",
+    "urlencode": "^1.1.0"
   }
 }
