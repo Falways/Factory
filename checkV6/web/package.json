@@ -9,11 +9,15 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "file-saver": "^2.0.1",
     "iview": "^3.2.2",
+    "json2xlsx-export": "^1.2.2",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "vue": "^2.5.22",
-    "vue-router": "^3.0.2"
+    "vue-json-excel": "^0.2.98",
+    "vue-router": "^3.0.2",
+    "xlsx": "^0.14.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.4.0",

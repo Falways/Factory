@@ -11,6 +11,14 @@ const routers = [
         },
         name:'index',
         component:()=>import('../components/index.vue')
+    },
+    {
+        path:'/illegalUrl',
+        meta:{
+            title:'不良URL查询',
+        },
+        name:'illegalUrl',
+        component:() => import('../components/illegalUrl.vue')
     }
 ]
 
