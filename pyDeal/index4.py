@@ -37,3 +37,15 @@ class Bar(object):
 
 Bar().bar('aa', 'ids')
 
+"""
+输出：
+class decorator is running
+Happy
+class decorate ending
+------------------------
+
+class decorator runing
+(<__main__.Bar object at 0x0000000003AFE390>, 'aa', 'ids')
+bar
+
+"""
