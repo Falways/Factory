@@ -7,6 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var badNessRouter = require('./routes/badness_url');
+var eveRouter = require('./routes/evalution');
 var app = express();
 let generate = require('./db/generate').init();
 // view engine setup
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/eve/',eveRouter)
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/badness_url',badNessRouter);
