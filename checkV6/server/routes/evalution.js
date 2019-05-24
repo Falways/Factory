@@ -4,6 +4,7 @@ let router = require('express').Router();
 var async = require('async');
 let config = require('../config');
 
+
 router.post('/eve_login', function (req, res, next) {
     let body = req.body;
     if (!body.username || !body.password || body.username != config.username || body.password != config.password) {
@@ -12,15 +13,14 @@ router.post('/eve_login', function (req, res, next) {
         return;
     }
     // 生成token返回给用户端
-    let tokenExpires = parseInt(moment.valueOf()) + parseInt(config.jwt_expire);
-    let token = jwt.decode({
+    let tokenExpires = parseInt(moment().valueOf()) + parseInt(config.jwt_expire);
+    let token = jwt.encode({
         iss: 'MS',
         username:config.username,
         exp: tokenExpires,
         sessionId:Math.random().toString().substr(2),
     },config.jwt_secret);
-    res.code(200);
-    res.send({message:'success',token:token});
+    res.json({message:'success',token:token});
 })
 
 router.post('/eve_board',function (req, res, next) {
@@ -41,3 +41,4 @@ router.post('/eve_board',function (req, res, next) {
 
 })
 
+module.exports = router;

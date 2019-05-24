@@ -1,6 +1,6 @@
 {
   "username": "shift",
-  "password": "shift12306",
+  "password": "123456",
   "jwt_secret": "*(?)queryEQ>.",
   "jwt_expire": 8640000,
   "natUser": "aa",
