@@ -3,6 +3,7 @@
   "password": "123456",
   "jwt_secret": "*(?)queryEQ>.",
   "jwt_expire": 8640000,
-  "natUser": "aa",
-  "natPass": "aa_123"
+  "natAddr": "nats://192.168.128.210:4212",
+  "natUser": "xuhang",
+  "natPass": "xuhang123456"
 }

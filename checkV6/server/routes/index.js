@@ -52,6 +52,163 @@ router.get('/' ,function(req, res, next) {
     ])
 });
 
+// 不测试速度，只获取支持度
+exports.checkNormalV46 = async function(domain,finalSend){
+    let finalResult = {};
+    let score = 0;
+    await exec(`dig @114.114.114.114 ${domain} A`,function (error,stdout,stderr) {
+        if (error && error!=null){
+            finalSend({systemError:true})
+            return;
+        }
+        if (stderr){
+            finalSend({systemError:true})
+            return;
+        }
+        let v4addr = null;
+        let reg = /ANSWER SECTION:((\r\n)|(\n))[\w\s.\d:-]+/gm;
+        let v4reg = /((2[0-4][0-9])|(25[0-5])|(1[0-9]{0,2})|([1-9][0-9])|([1-9]))\.(((2[0-4][0-9])|(25[0-5])|(1[0-9]{0,2})|([1-9][0-9])|([0-9]))\.){2}((2[0-4][0-9])|(25[0-5])|(1[0-9]{0,2})|([1-9][0-9])|([1-9]))/g;
+        console.log(stdout);
+        let s0 = stdout.match(reg);
+        if (s0 && s0.length>0){
+            let s1 = null;
+            for (let i = 0;i<s0.length;i++){
+                let temp = s0[i].match(v4reg);
+                if (temp && temp[0]) {
+                    s1=temp[0];
+                    break;
+                }
+            }
+            if (s1){
+                console.log('我的输出：'+s1)
+                v4addr = s1;
+                finalResult['supportV4']=true;
+                finalResult['v4addr']=v4addr;
+                score+=10;
+            }else {
+                finalResult['supportV4']=false;
+                finalResult['v4addr']=null;
+            }
+        }else {
+            finalResult['supportV4']=false;
+            finalResult['v4addr']=null;
+        }
+    })
+    await exec(`dig @114.114.114.114 ${domain} AAAA`,function (error,stdout,stderr) {
+        if (error && error!=null){
+            finalSend({systemError:true})
+            return;
+        }
+        if (stderr){
+            finalSend({systemError:true})
+            return;
+        }
+        let v6addr = null;
+        let reg = /ANSWER SECTION:((\r\n)|(\n))[\w\s.\d:-]+/gm;
+        let v6reg = /((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?/g;
+        console.log(stdout);
+        let s0 = stdout.match(reg);
+        if (s0 && s0.length>0){
+            let s1 = null;
+            for (let i = 0;i<s0.length;i++){
+                let temp = s0[i].match(v6reg);
+                if (temp && temp[0]) {
+                    s1=temp[0];
+                    break;
+                }
+            }
+            if (s1){
+                v6addr = s1;
+                finalResult['v6addr']=v6addr;
+                score+=10;
+            }else {
+                finalResult['v6addr']=null;
+            }
+        }else {
+            finalResult['supprtV4']=false;
+            finalResult['v6addr']=null;
+        }
+        finalResult['supportV6']=false;
+        async.waterfall([
+            function (done) {
+                //v4 http
+                validReq('http://'+domain,(result)=>{
+                    if (result=='success') {
+                        finalResult['v4http'] = result;
+                        score+=20;
+                        finalResult['score']=score;
+                    } else {
+                        finalResult['v4http']=result;
+                        finalResult['score']=score;
+                    }
+                    done()
+                })
+            },
+            function (done) {
+                //v4 https
+                validReq('https://'+domain,(result)=>{
+                    if (result=='success') {
+                        finalResult['v4https']=result;
+                        score+=20;
+                        finalResult['score']=score;
+                    } else {
+                        finalResult['v4https']=result;
+                        finalResult['score']=score;
+                    }
+                    done()
+                })
+            },
+            function (done) {
+                if (v6addr){
+                    //v6 http
+                    score += 20;
+                    finalResult['supportV6']=true;
+                    curlSpeed('http://'+domain,(result)=>{
+                        if (result!='err_url') {
+                            finalResult['v6http']='success';
+                            score+=20;
+                            finalResult['score']=score;
+                        } else {
+                            finalResult['v6http']=result;
+                            finalResult['score']=score;
+                        }
+                        done()
+                    })
+                }else {
+                    done()
+                }
+            },
+            function (done) {
+                if (v6addr){
+                    //v6 https
+                    curlSpeed('https://'+domain,(result)=>{
+                        if (result!='err_url') {
+                            finalResult['v6https']='success';
+                            score+=20;
+                            finalResult['score']=score;
+                        } else {
+                            finalResult['v6https']=result;
+                            finalResult['score']=score;
+                        }
+                        done()
+                    })
+                }else {
+                    finalResult['score']=score;
+                    done()
+                }
+            },
+            function (done) {
+                finalResult = Object.assign(finalResult,{systemError:false})
+                finalSend(finalResult);
+                done()
+            }
+        ])
+
+    })
+
+
+}
+
 router.post('/checkV6',async (req,res,next)=>{
     let body = req.body;
     let domain = body.domain;
@@ -268,7 +425,6 @@ router.post('/checkV6',async (req,res,next)=>{
             }
         ])
     })
-
 })
 
 const validReq = (url,done) => {
@@ -433,4 +589,4 @@ const testSpeed = function(url,callback) {
     ])
 }
 
-module.exports = router;
+exports.route = router;
