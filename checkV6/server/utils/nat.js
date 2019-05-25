@@ -24,15 +24,27 @@ const natPublish = function(url){
 const natSubscriberBySid = function(callback){
     LogFile.info('Self start subscribing message by once');
     let sid;
+    let hasRespone = false;
     try {
         sid = nats.subscribe('eve_reply', function(msg) {
-            LogFile.info('Unsubscribe by sid, sid is'+ sid);
-            nats.unsubscribe(sid);
-            callback(true,msg);
+            if (!hasRespone){
+                LogFile.info('Unsubscribe by sid, sid is'+ sid);
+                hasRespone = true;
+                nats.unsubscribe(sid);
+                callback(true,msg);
+            }
         });
+        setTimeout(()=>{
+            if (!hasRespone){
+                LogFile.info('Too long wait subscribing task sid:'+sid+', closed');
+                nats.unsubscribe(sid);
+                callback(false,null);
+            }
+        },1000*60*6)
     }catch (e) {
         LogFile.info('Catch Unsubscribe by sid, sid is'+ sid);
         LogFile.error('Subscribing catch Error: '+e);
+        hasRespone = true;
         nats.unsubscribe(sid);
         callback(false,null);
     }
