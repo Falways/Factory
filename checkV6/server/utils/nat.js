@@ -5,7 +5,8 @@ var log4jsutil = require('../utils/logs');
 var LogFile = log4jsutil.getLogger();
 let nats;
 try {
-    // nats = NATS.connect({'url':config.natAddr, 'user':config.natUser, 'pass':config.natPass});
+     nats = NATS.connect({'url':config.natAddr, 'user':config.natUser, 'pass':config.natPass});
+    LogFile.info('Connect Nats success: ');
 }catch (e) {
     LogFile.error('Connect Nats error: '+e);
     process.exit()
@@ -20,17 +21,22 @@ const natPublish = function(url){
 };
 
 // 订阅消息
-const natSubscriber = function(callback){
-    // Request for single response with timeout.
-    nats.requestOne('eve_reply', null, {}, 1000*60*5, function(response) {
-        // `NATS` is the library.
-        if(response instanceof NATS.NatsError && response.code === NATS.REQ_TIMEOUT) {
-            LogFile.error('Nats subscriber timeout');
-            callback(false,'timeout');
-            return;
-        }
-        callback(true,response)
-    });
+const natSubscriberBySid = function(callback){
+    LogFile.info('Self start subscribing message by once');
+    let sid;
+    try {
+        sid = nats.subscribe('eve_reply', function(msg) {
+            LogFile.info('Unsubscribe by sid, sid is'+ sid);
+            nats.unsubscribe(sid);
+            callback(true,msg);
+        });
+    }catch (e) {
+        LogFile.info('Catch Unsubscribe by sid, sid is'+ sid);
+        LogFile.error('Subscribing catch Error: '+e);
+        nats.unsubscribe(sid);
+        callback(false,null);
+    }
+
 }
 
 process.on('exit', (code) => {
@@ -40,5 +46,5 @@ process.on('exit', (code) => {
 
 module.exports = {
     natPublish,
-    natSubscriber
+    natSubscriberBySid
 }

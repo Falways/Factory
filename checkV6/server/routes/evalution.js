@@ -1,10 +1,12 @@
 let jwt = require('jwt-simple');
 let moment = require('moment');
 let router = require('express').Router();
-var async = require('async');
+let async = require('async');
 let config = require('../config');
 let v46 = require('./index').checkNormalV46;
 let NAT = require('../utils/nat');
+let log4jsutil = require('../utils/logs');
+let LogFile = log4jsutil.getLogger();
 
 router.post('/eve_login', function (req, res, next) {
     let body = req.body;
@@ -55,7 +57,7 @@ router.get('/eve_board', function (req, res, next) {
          v6https: 'err_url',
          systemError: false
          */
-        let mockData = {
+        /*let mockData = {
             v6addr: '240e:ff:9000:1100::402',
             supportV6: true,
             supportV4: true,
@@ -66,9 +68,10 @@ router.get('/eve_board', function (req, res, next) {
             v6http: 'err_url',
             v6https: 'err_url'
         };
-        res.json(mockData)
+        res.json(mockData)*/
         // 获取监测是v4(6)http(s)情况
-        /*v46(domain,async function (finalSend) {
+        v46(domain,async function (finalSend) {
+            LogFile.info('Self v46 response Data is: '+JSON.stringify(finalSend));
             if (finalSend.systemError==true){
                 res.status(500)
                 res.json({state:false,message:'系统错误！'})
@@ -81,16 +84,101 @@ router.get('/eve_board', function (req, res, next) {
             }
             // 消息队列调python取值
             await NAT.natPublish(domain)
-            await NAT.natSubscriber(function (state,data) {
-                if (!state){
+            await NAT.natSubscriberBySid(function (state,data) {
+                LogFile.info('Nats response Data is: '+JSON.stringify(data));
+                if (!state || data=='ERROR'){
                     res.status(500)
                     res.json({state:false,message:'系统错误！'})
                     return;
                 }
                 // 返回客户端数据
+                try {
+                    data = JSON.parse(data);
+                    if (data.url!==domain){
+                        LogFile.error('Domain is difference with Nats respones url!');
+                        res.status(500);
+                        res.json({state:false,message:'系统错误！'});
+                        return;
+                    }
+                }catch (e) {
+                    res.status(500)
+                    res.json({state:false,message:'系统错误！'})
+                    return;
+                }
 
+                let finalResult = {};
+                // IPv6支持度数据
+                finalResult['v46'] = [{
+                    url:domain,
+                    supportV4:finalSend.supportV4?'是':'否',
+                    supportV6:finalSend.supportV6?'是':'否',
+                    ipv4_http:finalSend.v4http==='success'?'是':'否',
+                    ipv4_https:finalSend.v4https==='success'?'是':'否',
+                    ipv6_http:finalSend.v6http==='success'?'是':'否',
+                    ipv6_https:finalSend.v6https==='success'?'是':'否',
+                }];
+                finalResult['score'] = finalSend.score;
+
+                // IPv6转换规模评估
+                finalResult['links'] = [{
+                    total: data.second_site_num ? data.second_site_num+'条':0+'条',
+                    list: data.all_site && data.all_site.length>0 ? data.all_site:[]
+                }]
+
+                // IPv6转换复杂度评估
+                finalResult['detail'] = [
+                    {
+                        evaluateProject: finalSend.v4https==='success'?'支持HTTPS':'不支持HTTPS',
+                        number:'1',
+                        coefficient:finalSend.v4https==='success'?'1000':'500',
+                        evaluateValue:finalSend.v4https==='success'?'1000':'500'
+                    },
+                    {
+                        evaluateProject:'内部链接',
+                        number:data.internal_links_num,
+                        coefficient:parseInt(data.internal_links_num)*5,
+                        evaluateValue:parseInt(data.internal_links_num)*100
+                    },
+                    {
+                        evaluateProject:'外部链接',
+                        number:data.external_links_num,
+                        coefficient:parseInt(data.external_links_num)*10,
+                        evaluateValue:parseInt(data.external_links_num)*200
+                    },
+                    {
+                        evaluateProject:'图片链接',
+                        number:data.photo_kinks_num,
+                        coefficient:parseInt(data.photo_kinks_num)*10,
+                        evaluateValue:parseInt(data.photo_kinks_num)*200
+                    },
+                    {
+                        evaluateProject:'IP链接',
+                        number:data.ip_links_num,
+                        coefficient:parseInt(data.ip_links_num)*15,
+                        evaluateValue:parseInt(data.ip_links_num)*250,
+                    },
+                    {
+                        evaluateProject:'Javascript插件页面',
+                        number:data.js_links_num,
+                        coefficient:parseInt(data.js_links_num)*20,
+                        evaluateValue:parseInt(data.js_links_num)*300
+                    },
+                    {
+                        evaluateProject:'CSS样式链接',
+                        number:data.scc_links_num,
+                        coefficient:parseInt(data.scc_links_num)*20,
+                        evaluateValue:parseInt(data.scc_links_num)*300
+                    },
+                    {
+                        evaluateProject:'定制化评估汇总',
+                        number:'-',
+                        coefficient:'-',
+                        evaluateValue:parseInt(data.scc_links_num)*300+parseInt(data.js_links_num)*300+parseInt(data.ip_links_num)*250+parseInt(data.photo_kinks_num)*200+parseInt(data.external_links_num)*200+parseInt(data.internal_links_num)*100
+                    }
+                ]
+                res.json({state:true,data:finalResult})
             })
-        })*/
+        })
 
     } catch (e) {
         res.status(400);
