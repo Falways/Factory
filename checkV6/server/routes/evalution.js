@@ -138,44 +138,44 @@ router.get('/eve_board', function (req, res, next) {
                     {
                         evaluateProject:'内部链接',
                         number:data.internal_links_num,
-                        coefficient:parseInt(data.internal_links_num)*5,
+                        coefficient:100,
                         evaluateValue:parseInt(data.internal_links_num)*100
                     },
                     {
                         evaluateProject:'外部链接',
                         number:data.external_links_num,
-                        coefficient:parseInt(data.external_links_num)*10,
+                        coefficient:200,
                         evaluateValue:parseInt(data.external_links_num)*200
                     },
                     {
                         evaluateProject:'图片链接',
                         number:data.photo_kinks_num,
-                        coefficient:parseInt(data.photo_kinks_num)*10,
-                        evaluateValue:parseInt(data.photo_kinks_num)*200
+                        coefficient:100,
+                        evaluateValue:parseInt(data.photo_kinks_num)*100
                     },
                     {
                         evaluateProject:'IP链接',
                         number:data.ip_links_num,
-                        coefficient:parseInt(data.ip_links_num)*15,
-                        evaluateValue:parseInt(data.ip_links_num)*250,
+                        coefficient:200,
+                        evaluateValue:parseInt(data.ip_links_num)*200,
                     },
                     {
                         evaluateProject:'Javascript插件页面',
                         number:data.js_links_num,
-                        coefficient:parseInt(data.js_links_num)*20,
+                        coefficient:300,
                         evaluateValue:parseInt(data.js_links_num)*300
                     },
                     {
                         evaluateProject:'CSS样式链接',
                         number:data.scc_links_num,
-                        coefficient:parseInt(data.scc_links_num)*20,
+                        coefficient:300,
                         evaluateValue:parseInt(data.scc_links_num)*300
                     },
                     {
                         evaluateProject:'定制化评估汇总',
                         number:'-',
                         coefficient:'-',
-                        evaluateValue:parseInt(data.scc_links_num)*300+parseInt(data.js_links_num)*300+parseInt(data.ip_links_num)*250+parseInt(data.photo_kinks_num)*200+parseInt(data.external_links_num)*200+parseInt(data.internal_links_num)*100+parseInt(http_evaluateValue)
+                        evaluateValue:parseInt(data.scc_links_num)*300+parseInt(data.js_links_num)*300+parseInt(data.ip_links_num)*200+parseInt(data.photo_kinks_num)*200+parseInt(data.external_links_num)*200+parseInt(data.internal_links_num)*100+parseInt(http_evaluateValue)
                     }
                 ]
                 res.json({state:true,data:finalResult})
