@@ -125,13 +125,15 @@ router.get('/eve_board', function (req, res, next) {
                     list: data.all_site && data.all_site.length>0 ? data.all_site:[]
                 }]
 
+                let http_evaluateValue = finalSend.v4https==='success'?'1000':'500'
+
                 // IPv6转换复杂度评估
                 finalResult['detail'] = [
                     {
                         evaluateProject: finalSend.v4https==='success'?'支持HTTPS':'不支持HTTPS',
                         number:'1',
                         coefficient:finalSend.v4https==='success'?'1000':'500',
-                        evaluateValue:finalSend.v4https==='success'?'1000':'500'
+                        evaluateValue:http_evaluateValue
                     },
                     {
                         evaluateProject:'内部链接',
@@ -173,7 +175,7 @@ router.get('/eve_board', function (req, res, next) {
                         evaluateProject:'定制化评估汇总',
                         number:'-',
                         coefficient:'-',
-                        evaluateValue:parseInt(data.scc_links_num)*300+parseInt(data.js_links_num)*300+parseInt(data.ip_links_num)*250+parseInt(data.photo_kinks_num)*200+parseInt(data.external_links_num)*200+parseInt(data.internal_links_num)*100
+                        evaluateValue:parseInt(data.scc_links_num)*300+parseInt(data.js_links_num)*300+parseInt(data.ip_links_num)*250+parseInt(data.photo_kinks_num)*200+parseInt(data.external_links_num)*200+parseInt(data.internal_links_num)*100+parseInt(http_evaluateValue)
                     }
                 ]
                 res.json({state:true,data:finalResult})
