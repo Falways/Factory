@@ -40,7 +40,7 @@ router.get('/eve_board', function (req, res, next) {
         let reg = /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}(:\d+\/)?$/gi;
         let domain = body.url.replace(/(http|https):\/\//gi,'');
         if (!reg.test(domain)) {
-            res.status(500)
+            res.status(500);
             res.json({state: false, message: '域名不合法'})
             return;
         }

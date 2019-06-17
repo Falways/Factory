@@ -56,7 +56,7 @@ router.get('/' ,function(req, res, next) {
 exports.checkNormalV46 = async function(domain,finalSend){
     let finalResult = {};
     let score = 0;
-    await exec(`dig @117.25.152.130 ${domain} A`,function (error,stdout,stderr) {
+    await exec(`dig @114.114.114.114 ${domain} A`,function (error,stdout,stderr) {
         if (error && error!=null){
             finalSend({systemError:true})
             return;
@@ -94,7 +94,7 @@ exports.checkNormalV46 = async function(domain,finalSend){
             finalResult['v4addr']=null;
         }
     })
-    await exec(`dig @117.25.152.130 ${domain} AAAA`,function (error,stdout,stderr) {
+    await exec(`dig @114.114.114.114 ${domain} AAAA`,function (error,stdout,stderr) {
         if (error && error!=null){
             finalSend({systemError:true})
             return;
@@ -226,7 +226,7 @@ router.post('/checkV6',async (req,res,next)=>{
     final['time']=new Date();
     final['url']=domain;
     let score = 0;
-    await exec(`dig @117.25.152.130 ${arr[0]} A`,function (error,stdout,stderr) {
+    await exec(`dig @114.114.114.114 ${arr[0]} A`,function (error,stdout,stderr) {
         if (error && error!=null){
             res.status(500)
             res.json({state:false,message:'systemFailure'})
@@ -266,7 +266,7 @@ router.post('/checkV6',async (req,res,next)=>{
             final['v4addr']=null;
         }
     })
-    await exec(`dig @117.25.152.130 ${arr[0]} AAAA`,function (error,stdout,stderr) {
+    await exec(`dig @114.114.114.114 ${arr[0]} AAAA`,function (error,stdout,stderr) {
         if (error && error!=null){
             res.status(500)
             res.json({state:false,message:'systemFailure'})
