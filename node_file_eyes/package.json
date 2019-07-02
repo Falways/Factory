@@ -1,0 +1,12 @@
+{
+  "name": "node_file_eyes",
+  "version": "1.0.0",
+  "dependencies": {
+    "chokidar": "^3.0.1",
+    "fs": "^0.0.1-security",
+    "log4js": "^4.4.0",
+    "path": "^0.12.7",
+    "redis": "^2.8.0",
+    "save": "^2.4.0"
+  }
+}
