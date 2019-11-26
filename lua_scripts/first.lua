@@ -1,6 +1,15 @@
--- table
-local tbl = {username="xuhang",age=18,sex="man"}
+local array = {}
 
-for key,val in pairs(tbl) do
-	print(key,val)
+for i=1,3 do
+	array[i]={}
+		 for j=1,3 do
+		         array[i][j] = i*j
+		 end
+end
+
+-- ·ÃÎÊÊı×é
+for i=1,3 do
+   for j=1,3 do
+	  print(i.."*"..j,array[i][j])
+   end
 end
