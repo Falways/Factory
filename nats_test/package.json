@@ -1,0 +1,7 @@
+{
+  "name": "nats_test",
+  "version": "1.0.0",
+  "dependencies": {
+    "nats": "^1.2.4"
+  }
+}
