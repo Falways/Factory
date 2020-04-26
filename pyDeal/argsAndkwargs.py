@@ -15,6 +15,7 @@ fuc(1, 2, 3)
 # *kwargs 打包关键字参数成dict给函数体调用
 def fuc2(**kwargs):
     print(kwargs, type(kwargs))
+    print("a: "+str(kwargs["a"]))
 
 fuc2(a=1,b=2,c=3)
 # 输出

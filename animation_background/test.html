@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div style="width: 1000px;height: 500px;background-color: pink;"></div>
+		<script type="text/javascript">
+			(function(){
+				var phoneWidth = window.screen.width;
+				var phoneHeight = window.screen.height;
+				console.log(phoneWidth)
+				var ua = navigator.userAgent;
+				var phoneScale = phoneWidth/1680;
+				if (/Android (\d+\.\d+)/.test(ua)) {
+					if (version > 2.3) {
+					            document.write('<meta name="viewport" content="width=device-width,initial-scale='+phoneScale+',minimum-scale='+phoneScale+',maximum-scale='+phoneScale+',user-scalable=no">');
+					             // andriod 2.3以上
+					    } else {
+					       document.write('<meta name="viewport" content="width=device-width,user-scalable=no">');
+				    }
+				}else {
+					document.write('<meta name="viewport" content="width=device-width, initial-scale='+phoneScale+',minimum-scale='+phoneScale+',maximum-scale ='+phoneScale +',user-scalable=no">');
+				}
+			})()
+		</script>
+	</body>
+</html>
