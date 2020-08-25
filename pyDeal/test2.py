@@ -21,9 +21,9 @@ class testClass:
 
 if __name__ == '__main__':
     print("test aes-128-cbc")
-    padding = "000000"
+    padding = "123456"
     spacePadding = '\0\0\0\0\0\0\0\0\0\0\0'
-    tc = testClass("Secret=*88"+padding, padding+"999&(Honey")
+    tc = testClass("qwertyuiop"+padding, padding+"qwertyuiop")
     print(testClass.encrypt(tc, spacePadding+'test1'))
 
 # 471ef6f5698f0366af4f73dcdb5fdf06

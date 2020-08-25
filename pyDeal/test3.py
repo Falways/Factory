@@ -36,7 +36,7 @@ class AESCipher:
 
 
 if __name__ == '__main__':
-    e = AESCipher('Secret=*88000000', '000000999&(Honey')
+    e = AESCipher('qwertyuiop123456', '123456qwertyuiop')
     secret_data = '"test1"'
     enc_str = e.encrypt(secret_data)
     print('enc_str: ' + enc_str)
